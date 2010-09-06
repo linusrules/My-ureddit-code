@@ -89,14 +89,14 @@ class CrossWordRiddleSolver(object):
        It can be used to get all possible solutions.
        It uses callback for further processing
     """
-    def __init__(self, list_of_words, search_max_depth, callback):
+    def __init__(self, list_of_words, callback, search_max_depth):
         """Initializes searching
            list_of_words may be a non sorted list of any length words
            search_max_depth specifies the length of the solution, also
         """
         self.legal_words = LegalWords(list_of_words)
+        self.callback = callback        
         self.search_max_depth = search_max_depth
-        self.callback = callback
 
     def execute(self, partial_solution, letter):
 	"""Recursive search
@@ -116,13 +116,13 @@ class CrossWordRiddleSolver(object):
         else:
             raise ValueError('partial solution longer than expected.')
         
-def evaluate_solutions(data, search_max_depth = 3, callback = PrintCallbackSolver()):
+def evaluate_solutions(data, callback = PrintCallbackSolver(), search_max_depth = 3):
     # The following line is shameless copied from http://github.com/llimllib work
     # at http://github.com/llimllib/personal_code/blob/master/python/reddit_ai_101/lecture_4/betterxword.py#L1
     # Thanks llimllib
     list_of_words =  [w for w in open(data, 'r').read().split()]
     
-    solver = CrossWordRiddleSolver(list_of_words, search_max_depth, callback)
+    solver = CrossWordRiddleSolver(list_of_words, callback, search_max_depth)
     
     # Generating all possible solutions
     for word in list_of_words:
@@ -133,9 +133,23 @@ def evaluate_solutions(data, search_max_depth = 3, callback = PrintCallbackSolve
 import sys
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-	print 'We need some file with words'
-	print 'For example'
-	print '    python cwr.py words.txt'
+    if len(sys.argv) != 3:
+        print 'We need some file with words and a callback identifier'
+        print 'For example'
+        print '    python cwr.py words.txt print'
+        print 'or'
+        print '    python cwr.py words.txt forest'	
+        print 'Please note that the option forest dont give any output'
+        print 'The option forest is just for testing ForestCallbackSolver'
     else:
-	evaluate_solutions(sys.argv[1])
+        data = sys.argv[1]
+        identifier = sys.argv[2]
+        if identifier == 'print':
+            callback = PrintCallbackSolver()
+        elif identifier == 'forest':
+            callback = ForestCallbackSolver()
+        else:
+            print 'Bad callback identifier. It must be print or forest'
+            print 'Defaulting to print'
+            callback = PrintCallbackSolver()
+	evaluate_solutions(data, callback)

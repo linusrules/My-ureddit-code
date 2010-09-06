@@ -98,20 +98,17 @@ class CrossWordRiddleSolver(object):
         self.search_max_depth = search_max_depth
         self.callback = callback
 
-    def execute(self, partial_solution):
+    def execute(self, partial_solution, letter):
 	"""Recursive search
 	   len(partial_solution) <= self.search_max_depth
 	"""
         if len(partial_solution) < self.search_max_depth:
-            initial = partial_solution[-1][-1]
-            for word in self.legal_words.by_initial_letter(initial):
+            for word in self.legal_words.by_initial_letter(letter):
                 new_partial_solution = list(partial_solution)
                 new_partial_solution.append(word)
-                self.execute(new_partial_solution)
+                self.execute(new_partial_solution, word[-1])
         elif len(partial_solution) == self.search_max_depth:
-            initial = partial_solution[-1][-1]
-            final = partial_solution[0][0]
-            for word in self.legal_words.by_initial_and_final_letter(initial, final):
+            for word in self.legal_words.by_initial_and_final_letter(partial_solution[0][-1], letter):
                 solution = list(partial_solution)
                 solution.append(word)
                 self.callback.add_solution(solution)
@@ -129,7 +126,7 @@ def evaluate_solutions(data, search_max_depth = 3, callback = PrintCallbackSolve
     
     # Generating all possible solutions
     for word in list_of_words:
-        solver.execute([word])
+        solver.execute([word], word[0])
         
     callback.print_stats()
         

@@ -112,7 +112,6 @@ class CrossWordRiddleSolver(object):
                 solution = list(partial_solution)
                 solution.append(word)
                 self.callback.add_solution(solution)
-                print ', '.join(solution)
         else:
             raise ValueError('partial solution longer than expected.')
         

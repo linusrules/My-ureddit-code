@@ -252,7 +252,10 @@ def evaluate_solutions_4x4(data, random_sample_size):
     print '4x4 tstop - tstart %2.16e' % (tstop_4x4 - tstart_4x4)
     print '4x4 solutions %d' % solver_4x4.callback.counter()
 
-def evaluate_solutions_variable_length_words(list_of_words, random_sample_size):
+def evaluate_solutions_variable_length_words(data_3, data_4, random_sample_size):
+
+    list_of_words =  [w for w in open(data_3, 'r').read().split()]
+    list_of_words.extend([w for w in open(data_4, 'r').read().split()])
 
     first_letter_index = WordsIndex(list_of_words, 0)
     second_letter_index = WordsIndex(list_of_words, 1)
@@ -290,17 +293,10 @@ def evaluate_solutions_variable_length_words(list_of_words, random_sample_size):
 import sys
 
 if __name__ == '__main__':
-    if len(sys.argv) != 5:
-	print 'Error! I need four parameters: two pair of (a file with words and a random sample size)'
-    else:
-        data_3 = sys.argv[1]
-        random_sample_size_3 = int(sys.argv[2])
-	evaluate_solutions_3x3_and_3x5(data_3, random_sample_size_3)
-        data_4 = sys.argv[3]
-        random_sample_size_4 = int(sys.argv[4])
-	evaluate_solutions_4x4(data_4, random_sample_size_4)
-	
-	vlw =  [w for w in open(data_3, 'r').read().split()]
-	vlw.extend([w for w in open(data_4, 'r').read().split()])
-	
-	evaluate_solutions_variable_length_words(vlw, min(random_sample_size_3, random_sample_size_4))
+    data_3 = 'words.txt'
+    random_sample_size_3 = 500
+    data_4 = 'scrabble.txt'
+    random_sample_size_4 = 500
+    evaluate_solutions_3x3_and_3x5(data_3, random_sample_size_3)    
+    evaluate_solutions_4x4(data_4, random_sample_size_4)
+    evaluate_solutions_variable_length_words(data_3, data_4, min(random_sample_size_3, random_sample_size_4))

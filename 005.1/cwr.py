@@ -271,28 +271,29 @@ def time_cwr_six_words_different_length(
        (random_sample_size, solver.callback.counter(), t1 - t0)
 
 if __name__ == '__main__':
+    # You can change SilentCallback to PrintCallback
     time_cwr_four_words_equal_length(
         title = '3 x 3 CrossWord Riddle Solver', 
         data = 'words_3.txt', 
         random_sample_size = 500,
-        callback = StopCallback(PrintCallback())
+        callback = StopCallback(SilentCallback())
     )  
     time_cwr_four_words_equal_length(
         title = '4 x 4 CrossWord Riddle Solver', 
         data = 'words_4.txt', 
         random_sample_size = 500, 
-        callback = StopCallback(PrintCallback())
+        callback = StopCallback(SilentCallback())
     )  
     time_cwr_six_words_equal_length(
         title = '3 x 5 CrossWord Riddle Solver', 
         data = 'words_3.txt', 
         random_sample_size = 500, 
-        callback = StopCallback(PrintCallback())
+        callback = StopCallback(SilentCallback())
     )  
     time_cwr_six_words_different_length(
         title = '3 x 5 CrossWord Riddle Solver',  
         data_1 = 'words_3.txt',
         data_2 = 'words_4.txt',
         random_sample_size = 500, 
-        callback = StopCallback(PrintCallback())
+        callback = StopCallback(SilentCallback())
     )

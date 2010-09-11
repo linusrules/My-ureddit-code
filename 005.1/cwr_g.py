@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """CrossWord Riddle Solver
+   Assignments 2 and 3, lecture 5
    python cwr.py
 """
 
 from time import clock
 from random import sample
 import sys
-import pdb
 
-# Wa want to process words with these letters
+# We want to process words with these letters
 letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 class WordsIndex(object):
@@ -48,7 +48,10 @@ class WordsIndex(object):
 		yield word
 
 class StopSolverException(BaseException):
-      pass
+    """This exception stops the solver pruning the search of solutions.
+       This exception does not signal an error
+    """
+    pass
 
 class StopCallback(object):
     def __init__(self, callback):
@@ -125,8 +128,8 @@ class CrossWordRiddleSolverSixWords(object):
     """
     def __init__(self, index_array, callback):
         """Initializes searching
-           list_of_words may be a non sorted list of any length words
-           search_max_depth specifies the length of the solution, also
+           index_array is an array of WordsIndex, may be with different words length
+           callback for further solution processing
         """
         assert(len(index_array) == 6)
         self.index_array = index_array
@@ -274,7 +277,6 @@ def time_cwr_six_words_different_length(
        (random_sample_size, solver.callback.counter(), t1 - t0)
 
 if __name__ == '__main__':
-
     time_cwr_four_words_equal_length(
         title = '3 x 3 CrossWord Riddle Solver', 
         data = 'words_3.txt', 

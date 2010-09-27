@@ -52,8 +52,8 @@ class Solver(object):
 	    self.boxes[row] = [0] * SIZE
 	    for col in xrange(SIZE):
                 self.boxes[row][col] = ((p, q) 
-                      for p in xrange(BOX * (row // BOX), BOX * (row // BOX) + BOX)
-                      for q in xrange(BOX * (col // BOX), BOX * (col // BOX) + BOX))
+                     for p in xrange(BOX * (row / BOX), BOX * (row / BOX) + BOX)
+                     for q in xrange(BOX * (col / BOX), BOX * (col / BOX) + BOX))
 
     def execute(self, grid):
         print 'Start'
@@ -134,5 +134,3 @@ if __name__ == '__main__':
     solver.execute(grid)
     t1 = clock()
     print 'time %f' % (t1 - t0)    
-    
-    

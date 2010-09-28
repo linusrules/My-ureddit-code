@@ -7,6 +7,12 @@ class StopSolverException(BaseException):
     """
     pass
 
+class FailSolverException(BaseException):
+    """This exception stops the solver pruning the search.
+       This exception does not signal an error
+    """
+    pass
+
 """Do you want change BOX and SIZE? Go ahead.
    Change GRID also.
 """
@@ -54,15 +60,7 @@ def generate_tree(grid, row = -1, col = SIZE - 1):
        row and col are the coordinates of the last updated cell
     """
     # We must search a new cell for updating, where grid[row][col] == 0
-    col += 1
-    if col == SIZE:
-        col = 0
-        row += 1
-        if row == SIZE:
-            show(grid)
-            # Solution found, quitting search
-            raise StopSolverException
-    number = grid[row][col]
+    number = 1
     while number != 0:
         col += 1
         if col == SIZE:
@@ -79,11 +77,18 @@ def generate_tree(grid, row = -1, col = SIZE - 1):
                 for p in xrange(BOX * (row / BOX), BOX * (row / BOX) + BOX) 
                 for q in xrange(BOX * (col / BOX), BOX * (col / BOX) + BOX))
     for (p, q) in box:                
-            values.add(grid[p][q])
+        values.add(grid[p][q])
+    if len(values) == SIZE:
+        print 'Box fail. row %d col %d' % (row + 1, col + 1)
     for p in grid[row]:
         values.add(p)
+        if len(values) == SIZE:
+            print 'Row fail. row %d col %d' % (row, col)
         for q in [grid[rr][col] for rr in xrange(SIZE)]:
             values.add(q)
+            if len(values) == SIZE:
+               print 'Col fail. row %d col %d' % (row + 1, col + 1)
+               # show(grid)
     for number in xrange(1, SIZE + 1):
         # Solutions contain numbers not in values      
         if number not in values:

@@ -83,9 +83,27 @@ def generate_tree(grid, row = -1, col = SIZE - 1):
                generate_tree(grid, row, col)
                grid[row][col] = 0
 
+from random import sample
+from random import randint
+
+def populate_grid(grid):
+    symbols = set([v for v in xrange(1, SIZE + 1)])
+    for v in xrange(SIZE):
+        value = sample(symbols, 1)[0]
+        index = randint(0, SIZE - 1);
+        grid[v][index] = value
+        symbols.remove(value)
+    
+def generate_grid():
+    grid = [None] * SIZE
+    symbols = set([v for v in xrange(1, SIZE + 1)])
+    for v in xrange(SIZE):
+        row = [0] * SIZE
+        grid[v] = row
+    populate_grid(grid)
+    return grid
 
 LENGTH = 80
-
 
 if __name__ == '__main__':
     print '=' * LENGTH
@@ -99,5 +117,12 @@ if __name__ == '__main__':
     t0 = clock()
     execute(grid)
     t1 = clock()
-    print 'time %f' % (t1 - t0)    
+    print 'time %f' % (t1 - t0)
+    for v in xrange(10):
+        print '=' * LENGTH
+        grid = generate_grid()
+        t0 = clock()
+        execute(grid)
+        t1 = clock()
+        print 'time %f' % (t1 - t0)    
     
